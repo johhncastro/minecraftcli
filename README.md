@@ -2,7 +2,7 @@
 
 A small Ruby CLI for looking up Minecraft player info — UUIDs, name history, and capes — straight from your terminal.
 
-<img src="minecraftcli-sr.gif" width="100%" alt="minecraftcli demo" />
+<video src="minecraftcli-sr.mp4" width="100%" controls autoplay loop muted></video>
 
 ## Features
 
