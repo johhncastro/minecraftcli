@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.join(__dir__, "..", "lib")
+
+require "minecraftcli"
+require "minecraftcli/session"
+
+if ARGV.empty?
+  Minecraftcli::Session.start
+else
+  ARGV.map! { |arg| arg =~ /\A-([a-z]{2,})\z/i ? "--#{$1}" : arg }
+
+  require "optparse"
+
+  options = {}
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: minecraftcli [-user <username>]"
+    opts.on("-user USERNAME", "--user USERNAME", "Look up a player directly") { |u| options[:user] = u }
+    opts.on("-h", "--help") { puts opts; exit }
+  end
+
+  begin
+    parser.parse!
+  rescue OptionParser::InvalidOption => e
+    Minecraftcli::Display.error(e.message)
+    exit 1
+  end
+
+  if options[:user]
+    begin
+      Minecraftcli.lookup(options[:user])
+    rescue RuntimeError => e
+      Minecraftcli::Display.error(e.message)
+      exit 1
+    end
+  else
+    puts parser
+    exit 1
+  end
+end
